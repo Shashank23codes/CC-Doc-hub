@@ -6,15 +6,29 @@ import Editor from './components/Editor';
 import StatusBar from './components/StatusBar';
 
 function App() {
+  const getAssetPath = (filename) => {
+    const base = import.meta.env.BASE_URL;
+    if (base === './' || base === '.') {
+      return `./${filename}`;
+    }
+    return `${base || '/'}${filename}`.replace(/\/+/g, '/');
+  };
+
+  const resolveTemplateHtml = (html) => {
+    return html
+      .replace(/\/Primary Logo Dark - A.svg/g, getAssetPath('Primary Logo Dark - A.svg'))
+      .replace(/\/Primary Logo Light - A.svg/g, getAssetPath('Primary Logo Light - A.svg'));
+  };
+
   const [activeDoc, setActiveDoc] = useState('onboarding');
   const [documents, setDocuments] = useState({
-    onboarding: templates.onboarding.html,
-    letterhead: templates.letterhead.html,
-    invoice: templates.invoice.html,
-    proposal: templates.proposal.html,
-    nda: templates.nda.html,
-    sow: templates.sow.html,
-    changeorder: templates.changeorder.html,
+    onboarding: resolveTemplateHtml(templates.onboarding.html),
+    letterhead: resolveTemplateHtml(templates.letterhead.html),
+    invoice: resolveTemplateHtml(templates.invoice.html),
+    proposal: resolveTemplateHtml(templates.proposal.html),
+    nda: resolveTemplateHtml(templates.nda.html),
+    sow: resolveTemplateHtml(templates.sow.html),
+    changeorder: resolveTemplateHtml(templates.changeorder.html),
   });
 
   const [stats, setStats] = useState({ words: 0, chars: 0, readTime: 0 });
@@ -39,8 +53,8 @@ function App() {
       }
     };
 
-    loadLogo('/Primary Logo Dark - A.svg', 'dark');
-    loadLogo('/Primary Logo Light - A.svg', 'light');
+    loadLogo(getAssetPath('Primary Logo Dark - A.svg'), 'dark');
+    loadLogo(getAssetPath('Primary Logo Light - A.svg'), 'light');
   }, []);
 
   const editorRef = useRef(null);
@@ -103,10 +117,14 @@ function App() {
     // Get editor content and replace relative image URLs with base64 data URIs
     let content = editorRef.current.innerHTML;
     if (logos.dark) {
-      content = content.replace(/\/Primary Logo Dark - A.svg/g, logos.dark);
+      const resolvedPath = getAssetPath('Primary Logo Dark - A.svg');
+      const escapedPath = resolvedPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      content = content.replace(new RegExp(escapedPath, 'g'), logos.dark);
     }
     if (logos.light) {
-      content = content.replace(/\/Primary Logo Light - A.svg/g, logos.light);
+      const resolvedPath = getAssetPath('Primary Logo Light - A.svg');
+      const escapedPath = resolvedPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      content = content.replace(new RegExp(escapedPath, 'g'), logos.light);
     }
 
     const sourceHTML = header + content + footer;
@@ -173,10 +191,14 @@ function App() {
         // Get editor content and replace relative image URLs with base64 data URIs
         let content = editorRef.current.innerHTML;
         if (logos.dark) {
-          content = content.replace(/\/Primary Logo Dark - A.svg/g, logos.dark);
+          const resolvedPath = getAssetPath('Primary Logo Dark - A.svg');
+          const escapedPath = resolvedPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+          content = content.replace(new RegExp(escapedPath, 'g'), logos.dark);
         }
         if (logos.light) {
-          content = content.replace(/\/Primary Logo Light - A.svg/g, logos.light);
+          const resolvedPath = getAssetPath('Primary Logo Light - A.svg');
+          const escapedPath = resolvedPath.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+          content = content.replace(new RegExp(escapedPath, 'g'), logos.light);
         }
 
         const container = document.createElement('div');
