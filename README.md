@@ -2,9 +2,6 @@
 
 A premium, interactive document creation and management web application designed for agencies, studios, and freelance professionals. Built with **React**, **Vite**, and **TailwindCSS**, the Document Generator Hub allows team members and clients to seamlessly edit, preview, and export high-fidelity documents (PDFs & DOCX files) with pixel-perfect brand alignment.
 
-> [!NOTE]
-> This is the package directory for `docapp`. The primary repository documentation is maintained in the root [README.md](file:///e:/web%20document/README.md).
-
 ---
 
 ## 🚀 Key Features

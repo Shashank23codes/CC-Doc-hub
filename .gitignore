@@ -1,0 +1,27 @@
+# Node modules
+docapp/node_modules/
+
+# Production builds
+docapp/dist/
+docapp/dist-ssr/
+
+# Logs
+docapp/logs
+docapp/*.log
+docapp/npm-debug.log*
+docapp/yarn-debug.log*
+docapp/yarn-error.log*
+docapp/pnpm-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
