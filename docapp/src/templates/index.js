@@ -5,6 +5,11 @@ import { proposal } from './proposal';
 import { nda } from './nda';
 import { sow } from './sow';
 import { changeorder } from './changeorder';
+import { internship } from './internship';
+import { offerletter } from './offerletter';
+import { payslip } from './payslip';
+import { experience } from './experience';
+import { lor } from './lor';
 
 export const templates = {
   onboarding,
@@ -13,5 +18,10 @@ export const templates = {
   proposal,
   nda,
   sow,
-  changeorder
+  changeorder,
+  internship,
+  offerletter,
+  payslip,
+  experience,
+  lor
 };

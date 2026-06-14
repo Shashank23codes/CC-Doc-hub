@@ -49,12 +49,56 @@ h1, h2, h3, h4, h5, h6, .logo-title {
   color: inherit;
 }
 
-/* Glowing text classes for premium look */
+/* Glowing text and borders for premium look */
 .text-glow {
   text-shadow: 0 0 8px rgba(46, 255, 156, 0.4);
 }
 
-/* Bulletproof Print Style to fix PDF truncation/cropping */
+.border-glow {
+  box-shadow: 0 0 10px rgba(46, 255, 156, 0.15);
+}
+
+/* Canvas Workspace Themes */
+.canvas-neutral {
+  background-color: #EAEDEE;
+}
+.canvas-slate {
+  background-color: #334155;
+}
+.canvas-dark {
+  background-color: #0F172A;
+}
+.canvas-warm {
+  background-color: #F5F5F4;
+}
+
+/* Zoom Transition Container */
+.zoom-container {
+  transform-origin: top center;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Print margin guides (toggled inside dashboard settings) */
+.show-print-guides #printable-document {
+  position: relative;
+}
+.show-print-guides #printable-document::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 50px;
+  right: 50px;
+  bottom: 40px;
+  border: 1px dashed rgba(27, 77, 62, 0.2);
+  pointer-events: none;
+}
+
+/* Custom transitions */
+.transition-all-300 {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide toolbar and panels in print mode */
 @media print {
   html, body {
     height: auto !important;
@@ -74,6 +118,7 @@ h1, h2, h3, h4, h5, h6, .logo-title {
 
   /* Hide all UI elements */
   header, 
+  aside,
   .toolbar, 
   [class*="print:hidden"],
   button {

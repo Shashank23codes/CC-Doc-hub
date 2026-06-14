@@ -82,6 +82,35 @@ export const invoice = {
         font-family: 'JetBrains Mono', monospace;
         font-weight: 500;
     }
+    .qr-container {
+        display: inline-block;
+        text-align: center;
+        background: #ffffff;
+        padding: 10px;
+        border: 1px dashed #1B4D3E;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        position: relative;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .qr-container:hover {
+        border-color: #2EFF9C;
+        box-shadow: 0 4px 12px rgba(46, 255, 156, 0.15);
+        transform: translateY(-2px);
+    }
+    .upi-qr {
+        width: 140px;
+        height: 140px;
+        display: block;
+        margin: 0 auto;
+        border: 1px solid #f0f0f0;
+        border-radius: 4px;
+        transition: transform 0.2s ease;
+    }
+    .qr-container:hover .upi-qr {
+        transform: scale(1.03);
+    }
   `,
   html: `
     <div class="inv-page Section1">
@@ -123,9 +152,8 @@ export const invoice = {
                     <td style="vertical-align: top;">
                         <h3 style="margin: 0 0 10px 0; font-size: 11px; color: #1B4D3E; text-transform: uppercase; font-weight: 700; border-bottom: 1px solid #e0e0e0; padding-bottom: 5px; font-family: 'Space Grotesk', sans-serif;">Invoice Meta</h3>
                         <p style="margin: 0; font-size: 12px; color: #555; font-family: 'Inter', sans-serif;">
-                            <strong>Date:</strong> <span class="mono-val">May 23, 2026</span><br>
-                            <strong>Due Date:</strong> <span class="mono-val">June 01, 2026</span><br>
-                            <strong>Status:</strong> Pending
+                            <strong>Date:</strong> <span class="mono-val">{{DATE}}</span><br>
+                            <strong>Due Date:</strong> <span class="mono-val">{{DUE_DATE}}</span>
                         </p>
                     </td>
                 </tr>
@@ -173,10 +201,6 @@ export const invoice = {
                                 <td class="mono-val" style="padding: 8px 15px; text-align: right; border-bottom: 1px solid #e0e0e0; font-size: 12px; font-weight: 600;">₹9,000.00</td>
                             </tr>
                             <tr>
-                                <td style="padding: 8px 15px; text-align: right; border-bottom: 1px solid #e0e0e0; font-size: 12px;">Discount:</td>
-                                <td class="mono-val" style="padding: 8px 15px; text-align: right; border-bottom: 1px solid #e0e0e0; font-size: 12px; color: #1B4D3E; font-weight: 600;">-₹0.00</td>
-                            </tr>
-                            <tr>
                                 <td style="padding: 8px 15px; text-align: right; border-bottom: 1px solid #e0e0e0; font-size: 13px; font-weight: 700; font-family: 'Space Grotesk', sans-serif;">Total Outstanding:</td>
                                 <td class="mono-val" style="padding: 8px 15px; text-align: right; border-bottom: 1px solid #e0e0e0; font-size: 15px; font-weight: 800; color: #1B4D3E;">₹9,000.00</td>
                             </tr>
@@ -186,15 +210,26 @@ export const invoice = {
             </table>
 
             <div class="inv-payment-terms">
-                <h4 style="font-family: 'Space Grotesk', sans-serif;">How to Pay</h4>
-                <p>
-                    Please transfer the amount to our official agency account:<br>
-                    <strong>Account Name:</strong> CodeCloverStudio Private Limited<br>
-                    <strong>Bank:</strong> HDFC Bank Ltd<br>
-                    <strong>Account Number:</strong> <span class="mono-val">50200087452361</span><br>
-                    <strong>IFSC Code:</strong> <span class="mono-val">HDFC0000124</span><br>
-                    <strong>UPI ID:</strong> <span class="mono-val">codeclover@upi</span>
-                </p>
+                <table style="width: 100%; border: none; border-collapse: collapse; margin: 0; padding: 0; table-layout: fixed;" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="vertical-align: top; width: 60%; padding: 0; border: none;">
+                            <h4 style="margin: 0 0 10px 0; font-size: 12px; color: #0A0F0F; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Space Grotesk', sans-serif;">How to Pay</h4>
+                            <p style="margin: 0; font-size: 12px; color: #555555; line-height: 1.6;">
+                                Please transfer the amount to our official agency account:<br>
+                                <strong>Account Name:</strong> Shashank Gupta<br>
+                                <strong>Bank:</strong> Federal Bank<br>
+                                <strong>Account Number:</strong> <span class="mono-val">22440100019043</span><br>
+                                <strong>Mobile Number:</strong> <span class="mono-val">8956730349</span><br>
+                                <strong>UPI ID:</strong> <span class="mono-val">8956730349@upi</span>
+                            </p>
+                        </td>
+                        <td style="vertical-align: middle; width: 40%; text-align: right; padding: 0 0 0 20px; border: none;">
+                            <div class="qr-container" contenteditable="false" style="display: inline-block; text-align: center; background: #ffffff; padding: 12px; border: 1px dashed #1B4D3E; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                                <img class="upi-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi://pay?pa=8956730349@upi%26pn=Shashank%20Gupta%26am=9000.00%26cu=INR" alt="UPI QR Code" style="width: 140px; height: 140px; display: block; border: 1px solid #f0f0f0; border-radius: 4px;">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </main>
 
@@ -205,7 +240,7 @@ export const invoice = {
                     Thank you for your business!
                 </td>
                 <td style="text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #2EFF9C; padding: 20px 30px;">
-                    www.codecloverstudio.com
+                    www.codecloverstudio.in
                 </td>
             </tr>
         </table>

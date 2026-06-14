@@ -144,7 +144,7 @@ export const proposal = {
                     CodeCloverStudio | Proposal
                 </td>
                 <td style="text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #ffffff; padding: 20px 30px;">
-                    www.codecloverstudio.com
+                    www.codecloverstudio.in
                 </td>
             </tr>
         </table>

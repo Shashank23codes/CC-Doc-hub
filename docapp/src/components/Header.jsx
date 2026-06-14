@@ -1,76 +1,204 @@
-import React from 'react';
 import { 
   RotateCcw,
   Download,
-  FileSignature,
-  FileText,
-  Receipt,
-  Briefcase,
-  Lock,
-  ClipboardList,
-  FileEdit
+  ZoomIn,
+  ZoomOut,
+  PanelLeft,
+  PanelRight,
+  Maximize2,
+  Minimize2,
+  Grid
 } from 'lucide-react';
 
-// Central configuration for document templates to make extending/editing templates easy for anyone
-const DOCUMENTS_CONFIG = [
-  { id: 'onboarding', label: 'Agreement', icon: FileSignature },
-  { id: 'letterhead', label: 'Letterhead', icon: FileText },
-  { id: 'invoice', label: 'Invoice', icon: Receipt },
-  { id: 'proposal', label: 'Proposal', icon: Briefcase },
-  { id: 'nda', label: 'NDA', icon: Lock },
-  { id: 'sow', label: 'SOW', icon: ClipboardList },
-  { id: 'changeorder', label: 'Change Order', icon: FileEdit },
-];
+const DOCUMENTS_LABELS = {
+  onboarding: 'Agreement/Onboarding',
+  letterhead: 'Letterhead Template',
+  invoice: 'Billing Invoice',
+  proposal: 'Project Proposal',
+  nda: 'Non-Disclosure Agreement',
+  sow: 'Statement of Work',
+  changeorder: 'Change Order Request',
+  internship: 'Internship Certificate',
+  offerletter: 'Offer Letter',
+  payslip: 'Payment Slip',
+  experience: 'Experience Letter',
+  lor: 'Letter of Recommendation'
+};
 
-export default function Header({ activeDoc, onDocChange, onReset, onExportPdf, onExportWord }) {
+export default function Header({ 
+  activeDoc, 
+  onReset, 
+  onExportPdf, 
+  onExportWord,
+  sidebarCollapsed,
+  setSidebarCollapsed,
+  rightPanelOpen,
+  setRightPanelOpen,
+  focusMode,
+  setFocusMode,
+  zoomLevel,
+  setZoomLevel,
+  canvasTheme,
+  setCanvasTheme,
+  showPrintGuides,
+  setShowPrintGuides
+}) {
+
+  const handleZoom = (direction) => {
+    if (direction === 'in') {
+      setZoomLevel(prev => Math.min(1.5, +(prev + 0.1).toFixed(1)));
+    } else {
+      setZoomLevel(prev => Math.max(0.5, +(prev - 0.1).toFixed(1)));
+    }
+  };
+
   return (
-    <header className="h-16 bg-brand-dark-slate flex items-center justify-between px-6 shrink-0 border-b border-gray-800/80 z-10 print:hidden shadow-md">
-      <div className="flex items-center gap-6">
-        <div className="font-primary font-bold text-base tracking-widest text-white">
-          CODECLOVER<span className="text-brand-light-green font-extrabold text-glow">STUDIO</span>
-        </div>
-        
-        {/* Document Selector Tabs dynamically mapped from config */}
-        <div className="flex bg-black/60 p-1.5 rounded-xl border border-gray-800/60 gap-1 overflow-x-auto max-w-[580px] font-accent">
-          {DOCUMENTS_CONFIG.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => onDocChange(id)}
-              className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all duration-200 shrink-0 flex items-center gap-1.5 border cursor-pointer ${
-                activeDoc === id
-                  ? 'bg-brand-dark-green text-brand-light-green shadow-[0_0_15px_rgba(46,255,156,0.12)] border-brand-light-green/20'
-                  : 'text-gray-400 hover:text-white border-transparent hover:bg-gray-900/40'
-              }`}
-            >
-              <Icon size={13} />
-              {label}
-            </button>
-          ))}
+    <header className="h-16 bg-brand-dark-slate flex items-center justify-between px-6 shrink-0 border-b border-gray-800/80 z-10 print:hidden shadow-md font-sans select-none">
+      {/* Left Area: Side Control & Doc Title */}
+      <div className="flex items-center gap-4">
+        {/* Sidebar Trigger */}
+        <button 
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className={`p-2 rounded-lg cursor-pointer transition-colors duration-150 ${
+            !sidebarCollapsed ? 'text-brand-light-green bg-brand-dark-green/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/40'
+          }`}
+          title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          <PanelLeft size={16} />
+        </button>
+
+        <div className="h-5 w-px bg-gray-800"></div>
+
+        {/* Title and Badge */}
+        <div className="flex items-center gap-3">
+          <h2 className="text-[13px] font-primary font-bold text-white tracking-wide uppercase">
+            {DOCUMENTS_LABELS[activeDoc] || 'Active Document'}
+          </h2>
+          <span className="text-[9px] font-accent font-extrabold text-brand-light-green bg-brand-dark-green/20 border border-brand-light-green/20 px-1.5 py-0.5 rounded-sm uppercase tracking-wider text-glow animate-pulse">
+            Draft
+          </span>
         </div>
       </div>
 
-      {/* Action Controls */}
+      {/* Middle Area: Workspace & Styling Controllers (Hidden in focus mode if desired, or compact) */}
+      {!focusMode && (
+        <div className="hidden md:flex items-center bg-black/40 px-3.5 py-1.5 rounded-xl border border-gray-800/80 gap-5 font-accent text-xs">
+          {/* Zoom controls */}
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => handleZoom('out')} 
+              className="p-1 text-gray-500 hover:text-white rounded hover:bg-gray-800/60 cursor-pointer transition-colors"
+              title="Zoom Out"
+            >
+              <ZoomOut size={13} />
+            </button>
+            <span className="text-[10px] text-gray-300 font-bold w-10 text-center select-none">
+              {Math.round(zoomLevel * 100)}%
+            </span>
+            <button 
+              onClick={() => handleZoom('in')} 
+              className="p-1 text-gray-500 hover:text-white rounded hover:bg-gray-800/60 cursor-pointer transition-colors"
+              title="Zoom In"
+            >
+              <ZoomIn size={13} />
+            </button>
+          </div>
+
+          <div className="w-px h-4 bg-gray-800"></div>
+
+          {/* Canvas Themes */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-[9px] text-gray-500 font-bold uppercase tracking-wider">Canvas:</span>
+            <div className="flex items-center gap-1">
+              {[
+                { name: 'neutral', hex: '#EAEDEE', title: 'Light Neutral' },
+                { name: 'slate', hex: '#475569', title: 'Muted Slate' },
+                { name: 'warm', hex: '#F5F5F4', title: 'Premium Warm' },
+                { name: 'dark', hex: '#0F172A', title: 'Stealth Dark' },
+              ].map((theme) => (
+                <button
+                  key={theme.name}
+                  onClick={() => setCanvasTheme(theme.name)}
+                  className={`w-3.5 h-3.5 rounded-full border cursor-pointer hover:scale-110 transition-all ${
+                    canvasTheme === theme.name 
+                      ? 'border-brand-light-green scale-110 ring-1 ring-brand-light-green/30' 
+                      : 'border-transparent'
+                  }`}
+                  style={{ backgroundColor: theme.hex }}
+                  title={theme.title}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="w-px h-4 bg-gray-800"></div>
+
+          {/* Print Guides Toggle */}
+          <button 
+            onClick={() => setShowPrintGuides(!showPrintGuides)}
+            className={`flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider cursor-pointer transition-colors ${
+              showPrintGuides ? 'text-brand-light-green' : 'text-gray-500 hover:text-gray-300'
+            }`}
+            title="Toggle print layout guides"
+          >
+            <Grid size={11} />
+            <span>Guides</span>
+          </button>
+        </div>
+      )}
+
+      {/* Right Area: Action Panel */}
       <div className="flex items-center gap-3">
+        {/* Reset Document */}
         <button 
           onClick={onReset}
-          className="p-2 text-gray-400 hover:text-white hover:bg-gray-800/80 rounded-lg transition-all duration-200 hover:rotate-180 cursor-pointer"
-          title="Reset to default template"
+          className="p-2 text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all duration-200 hover:rotate-180 cursor-pointer"
+          title="Reset document content"
         >
-          <RotateCcw size={16} />
+          <RotateCcw size={15} />
         </button>
+
+        {/* Focus Mode Trigger */}
         <button 
-          onClick={onExportPdf}
-          className="px-3.5 py-1.5 bg-black text-brand-light-green border border-brand-dark-green rounded-lg text-xs font-accent font-bold flex items-center gap-1.5 hover:bg-gray-900/80 transition-all duration-200 cursor-pointer shadow-sm hover:border-brand-light-green/40"
+          onClick={() => setFocusMode(!focusMode)}
+          className={`p-2 rounded-lg cursor-pointer transition-colors duration-150 ${
+            focusMode ? 'text-brand-light-green bg-brand-dark-green/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+          }`}
+          title={focusMode ? "Exit Focus Mode" : "Enter Focus Mode"}
         >
-          <Download size={13} />
-          Export PDF
+          {focusMode ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
         </button>
+
+        <div className="h-5 w-px bg-gray-800"></div>
+
+        {/* Export Buttons */}
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={onExportPdf}
+            className="px-3 py-1.5 bg-black hover:bg-gray-950 text-brand-light-green border border-brand-dark-green rounded-lg text-[11px] font-accent font-bold flex items-center gap-1.5 transition-all duration-200 cursor-pointer shadow-sm hover:border-brand-light-green/45 hover:shadow-[0_0_8px_rgba(46,255,156,0.08)]"
+          >
+            <Download size={12} />
+            Export PDF
+          </button>
+          
+          <button 
+            onClick={onExportWord}
+            className="px-3 py-1.5 bg-brand-dark-green hover:bg-emerald-800 text-white rounded-lg text-[11px] font-accent font-bold flex items-center gap-1.5 transition-all duration-200 cursor-pointer shadow-sm shadow-brand-dark-green/10"
+          >
+            <Download size={12} />
+            Export Word
+          </button>
+        </div>
+
+        {/* Right Dashboard Toggle */}
         <button 
-          onClick={onExportWord}
-          className="px-3.5 py-1.5 bg-brand-dark-green text-white rounded-lg text-xs font-accent font-bold flex items-center gap-1.5 hover:bg-emerald-800 transition-all duration-200 cursor-pointer shadow-sm shadow-brand-dark-green/20"
+          onClick={() => setRightPanelOpen(!rightPanelOpen)}
+          className={`p-2 rounded-lg cursor-pointer transition-colors duration-150 ${
+            rightPanelOpen ? 'text-brand-light-green bg-brand-dark-green/20' : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+          }`}
+          title={rightPanelOpen ? "Close panel" : "Open panel"}
         >
-          <Download size={13} />
-          Export Word (.doc)
+          <PanelRight size={16} />
         </button>
       </div>
     </header>

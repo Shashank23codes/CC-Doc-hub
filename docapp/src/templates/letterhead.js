@@ -91,7 +91,7 @@ export const letterhead = {
                 <td style="text-align: right; vertical-align: middle; padding: 25px 30px; color: #E8EBEC; font-size: 11px; font-family: 'JetBrains Mono', monospace; line-height: 1.6;">
                     <span style="color: #2EFF9C; font-weight: 600;">T</span> +91 8956730349<br>
                     <span style="color: #2EFF9C; font-weight: 600;">E</span> codecloverstudio@gmail.com<br>
-                    <span style="color: #2EFF9C; font-weight: 600;">W</span> www.codecloverstudio.com
+                    <span style="color: #2EFF9C; font-weight: 600;">W</span> www.codecloverstudio.in
                 </td>
             </tr>
         </table>
@@ -124,9 +124,9 @@ export const letterhead = {
             </div>
 
             <div class="lh-signature">
-                <div style="font-family: 'Brush Script MT', cursive; font-size: 24px; color: #1B4D3E; margin-bottom: 5px;">Jane Smith</div>
-                <div class="lh-signature-name">Jane Smith</div>
-                <div class="lh-signature-title">Chief Executive Officer</div>
+                <div style="font-family: 'Brush Script MT', cursive; font-size: 24px; color: #1B4D3E; margin-bottom: 5px;">Shashank Gupta</div>
+                <div class="lh-signature-name">Shashank Gupta</div>
+                <div class="lh-signature-title">Founder, CodeCloverStudio</div>
             </div>
         </main>
 
